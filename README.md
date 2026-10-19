@@ -2,6 +2,22 @@
 
 一个本地运行的「拍照写真样片收集 + 分类」程序。后端 Python + SQLite，前端浏览器页面，无需构建工具。
 
+## 界面预览
+
+**图库**：瀑布流平铺 / 分组两种视图，底部停靠栏切换分类、排序、来源、标签，滚到底自动续载。
+
+![图库](docs/screenshots/gallery.png)
+
+| **采集样片** | **关注博主** |
+| --- | --- |
+| ![采集样片](docs/screenshots/collect.png) | ![关注博主](docs/screenshots/watch.png) |
+| 本地文件夹 / 手工上传 / 网页采集 / 目标分类四条通路，共用同一条去重入库流水线 | 填博主主页，想补时点一次「立即采集」；没有定时任务在背后跑 |
+
+| **分类管理** | **纠正分类** |
+| --- | --- |
+| ![分类管理](docs/screenshots/categories.png) | ![纠正分类](docs/screenshots/label.png) |
+| 增删分类、调关键词、一键重跑规则自动分类 | 先纠一小批，用 CLIP 特征训练后自动分掉剩下的 |
+
 ## 一、安装与启动
 
 环境要求：Windows 10/11，Python 3.10+（安装时勾选 "Add python.exe to PATH"）。
