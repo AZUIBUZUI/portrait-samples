@@ -1,0 +1,8 @@
+Flask>=3.0
+Pillow>=10.0
+requests>=2.31
+beautifulsoup4>=4.12
+numpy>=1.26
+playwright>=1.40
+# 可选：安装后启用 CLIP 视觉特征分类（模型文件需另放 data/models/clip_vision_quantized.onnx）
+# onnxruntime>=1.17

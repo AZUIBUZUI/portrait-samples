@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}关注博主 · 写真样片库{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <h2>关注博主 · 随时补采新作品</h2>
+  <p class="hint">
+    填进你常看的博主主页地址，想补的时候就点一次「立即采集」：程序打开 TA 的主页，
+    把还没采过的新作品整组抓进素材库。<br>
+    入库前会按原帖文字过一道：明确不是人像写真的（美食 / 风景 / 穿搭 / 探店…）不收，
+    拿不准的先收下并打上「待确认」标签，你可以在图库里按标签筛出来自己定。<br>
+    重复点也不会重复添加：处理过的笔记会记账跳过，图片本身还有内容哈希去重兜底。
+  </p>
+  <p class="hint small" id="login-hint">
+    首次使用需要先登录一次小红书：在项目目录执行 <code>python run.py --login</code>，
+    在弹出的浏览器窗口里扫码，登录态会自动保存，以后采集都不用再登了。<br>
+    如果采集时登录态已失效，程序会自动打开登录页并停在那里等你扫码；登录完成后会继续这次采集，不用重新点。
+  </p>
+</section>
+
+<section class="cards">
+  <div class="card">
+    <h3>添加博主</h3>
+    <p class="hint">主页完整地址，形如 https://www.xiaohongshu.com/user/profile/xxxxxxxx</p>
+    <input id="watcher-url" placeholder="https://www.xiaohongshu.com/user/profile/…" autocomplete="off">
+    <input id="watcher-name" placeholder="备注名（可留空，自动读主页昵称）" autocomplete="off">
+    <button class="btn primary" id="btn-add-watcher">加入关注</button>
+  </div>
+
+  <div class="card">
+    <h3>立即采集</h3>
+    <p class="hint">
+      什么时候想补就什么时候点，没有定时任务在背后跑。<br>
+      抓取会开着浏览器跑（复用已保存的登录态），要点时间，请等它跑完别关页面。
+    </p>
+    <button class="btn primary" id="btn-run-all">立即采集全部启用的博主</button>
+    <div class="stats-line" id="run-result"></div>
+  </div>
+</section>
+
+<section class="page-head">
+  <h2>关注列表</h2>
+</section>
+<table class="table" id="watchers-table">
+  <thead>
+    <tr><th>博主</th><th>主页</th><th>已采</th><th>上次运行</th><th>结果</th><th>操作</th></tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<section class="page-head">
+  <h2>最近处理过的笔记</h2>
+</section>
+<table class="table" id="notes-table">
+  <thead>
+    <tr><th>笔记</th><th>博主</th><th>结果</th><th>时间</th></tr>
+  </thead>
+  <tbody></tbody>
+</table>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/watch.js') }}"></script>
+{% endblock %}

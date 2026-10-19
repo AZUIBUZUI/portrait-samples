@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}纠正分类 · 写真样片库{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <h2>纠正分类 · 先过这一小批</h2>
+  <p class="hint">
+    这些样片的分类是系统先猜的，很可能有错。看图点正确的分类（键盘数字键也行），
+    点完自动跳到下一张。只需要过一遍这一批，之后用它们训练分类器，自动分剩下的样片。<br>
+    拿不准就点「跳过这张」——它不会进入训练集。<strong>你标注过的样片会永久退出纠错队列，以后不会再出现。</strong>
+  </p>
+</section>
+
+<section class="label-wrap" id="label-wrap">
+  <div class="label-view">
+    <img id="label-img" alt="">
+  </div>
+  <aside class="label-side">
+    <div class="label-progress" id="label-progress">加载中…</div>
+    <h3 id="label-title">—</h3>
+    <p class="hint" id="label-current"></p>
+    <div class="label-buttons" id="label-buttons"></div>
+    <div class="row">
+      <button class="btn" id="btn-skip">跳过这张</button>
+      <a class="btn" id="label-open" target="_blank">看原图</a>
+    </div>
+  </aside>
+</section>
+
+<div class="empty" id="label-empty" hidden>这一批都过完了，可以点下面开始训练。</div>
+
+<section class="card">
+  <h3>训练并分类</h3>
+  <p class="hint">用你纠正过的样片作为训练集，提取 CLIP 视觉特征做最近邻分类，把剩下的未分类 / 机器猜过的样片自动归类。会显示留一法准确率，人工确认过的样本不会被覆盖。<br>纠正完一批可以点「再抽 60 张纠正」，训练样本越多，准确率越高。</p>
+  <div class="row">
+    <button class="btn primary" id="btn-train">开始训练并分类</button>
+    <button class="btn" id="btn-seed">再抽 60 张纠正</button>
+  </div>
+  <div class="stats-line" id="train-result"></div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/label.js') }}"></script>
+{% endblock %}

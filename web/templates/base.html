@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}写真样片库{% endblock %}</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23e6b455'/%3E%3Ccircle cx='50' cy='50' r='26' fill='%23141216'/%3E%3Ccircle cx='50' cy='50' r='11' fill='%23e6b455'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="brand-mark">写</span>
+      <span class="brand-text">写真样片库<small>PORTRAIT&nbsp;SAMPLES</small></span>
+    </a>
+    <nav class="nav">
+      <a href="/" class="{{ 'active' if active == 'gallery' else '' }}">图库</a>
+      <a href="/collect" class="{{ 'active' if active == 'collect' else '' }}">采集</a>
+      <a href="/watch" class="{{ 'active' if active == 'watch' else '' }}">关注博主</a>
+      <a href="/categories" class="{{ 'active' if active == 'categories' else '' }}">分类管理</a>
+      <a href="/label" class="{{ 'active' if active == 'label' else '' }}">纠正分类</a>
+    </nav>
+    <div class="topbar-stats" id="topbar-stats"></div>
+  </header>
+
+  <main>{% block content %}{% endblock %}</main>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

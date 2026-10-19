@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}采集 · 写真样片库{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <h2>采集样片</h2>
+  <p class="hint">三种来源共用同一条入库流水线：内容去重 → 归入分类 → 生成缩略图。重复的图片不会入库两次。</p>
+</section>
+
+<section class="cards">
+  <!-- 本地文件夹 -->
+  <div class="card">
+    <h3>本地文件夹批量导入</h3>
+    <p class="hint">填一个文件夹的绝对路径，递归扫描其中的图片。</p>
+    <input id="dir-path" placeholder="D:\样片\2026-日系" autocomplete="off">
+    <label class="check"><input type="checkbox" id="dir-recursive" checked> 包含子文件夹</label>
+    <button class="btn primary" id="btn-import-dir">开始导入</button>
+  </div>
+
+  <!-- 拖拽上传 -->
+  <div class="card">
+    <h3>手工上传 / 拖拽补充</h3>
+    <p class="hint">把图片拖进下面的框，或点击选择文件（可多选）。</p>
+    <div class="dropzone" id="dropzone">
+      <span>拖拽图片到这里</span>
+      <small>或点击选择文件</small>
+      <input type="file" id="file-input" accept="image/*" multiple hidden>
+    </div>
+    <div class="progress" id="upload-progress" hidden></div>
+  </div>
+
+  <!-- 网页采集 -->
+  <div class="card">
+    <h3>网页 / 社交媒体采集</h3>
+    <p class="hint">一行一个地址。支持图片直链，或页面地址（自动抽取页面里的图片）。</p>
+    <textarea id="web-urls" rows="5" placeholder="https://example.com/post/123
+https://example.com/photo.jpg"></textarea>
+    <label class="check">最小边长(px) <input type="number" id="web-min-side" value="720" min="0" step="50"></label>
+    <p class="hint small">小于该边长的图会被当成图标 / logo / 糊图过滤掉，只留样片（默认 720，想只要高清成片可调到 1080）。表情包、梗图和 gif 动图不看尺寸直接剔除。<br>另外会按原帖文字过一道「是不是人像写真」：明确不是的（美食 / 风景 / 穿搭 / 探店…）直接不收，拿不准的先收下并打上「待确认」标签。本地导入与手工上传没有帖子文案，不拦。</p>
+    <button class="btn primary" id="btn-collect-web">开始采集</button>
+  </div>
+
+  <!-- 目标分类 -->
+  <div class="card">
+    <h3>目标分类</h3>
+    <p class="hint">选一个分类，本次采集的图片会直接归入；留空则按关键词自动归类。</p>
+    <select id="target-category"><option value="">不指定（自动归类）</option></select>
+    <div class="stats-line" id="collect-stats"></div>
+  </div>
+
+  <!-- 维护 -->
+  <div class="card">
+    <h3>回审已入库样片：是不是人像写真</h3>
+    <p class="hint">按原帖文字把已入库的网页采集样片重判一遍：明确不是人像的打「非人像」标签，拿不准的打「待确认」标签，判为写真的清掉旧标记。<br><strong>只标记，不删图片</strong> —— 回图库按标签筛出来，去留你自己定。本地导入与手工上传没有帖子文案，不参与。</p>
+    <button class="btn" id="btn-review-samples">开始回审</button>
+    <div class="stats-line" id="review-result"></div>
+  </div>
+
+  <div class="card">
+    <h3>订正已采集样片的作者 / 标题 / 日期</h3>
+    <p class="hint">每个原帖只重新打开一次，把之前误写成平台名（如"小红书"）的作者改回博主名、去掉标题里的平台后缀，抓取原帖文案，并把日期填成原帖的发布日期。<br>抓完文案会顺带跑一次自动分类（老样片也能归类）。不重新下载图片。<br>注意：会把这些样片的标题统一改成原帖标题，手动改过标题的会被覆盖。</p>
+    <button class="btn" id="btn-fix-meta">开始订正</button>
+    <div class="stats-line" id="fix-result"></div>
+  </div>
+</section>
+
+<section class="page-head">
+  <h2>采集记录</h2>
+</section>
+<table class="table" id="jobs-table">
+  <thead>
+    <tr><th>时间</th><th>来源</th><th>目标</th><th>结果</th><th>状态</th></tr>
+  </thead>
+  <tbody></tbody>
+</table>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/collect.js') }}"></script>
+{% endblock %}

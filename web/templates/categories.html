@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}分类管理 · 写真样片库{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <h2>分类管理</h2>
+  <p class="hint">新图入库时只按<strong>话题标签 / 标题</strong>归类，命不中就留「未分类」，不再用画面启发式乱猜。想让剩下的自动归类，请到「纠正分类」页过一小批样本，再用它们训练分类器。人工改过分类的样片不会被覆盖。<br>风格 / 光线（日系、逆光、胶片…）不建议建成分类，它们可以多选，放样片「标签」里更合适。</p>
+</section>
+
+<section class="cards">
+  <div class="card">
+    <h3>新增分类</h3>
+    <input id="new-name" placeholder="分类名，如 森系写真" autocomplete="off">
+    <input id="new-keywords" placeholder="关键词，逗号分隔，如 森系,森林,绿植" autocomplete="off">
+    <div class="row">
+      <input id="new-color" type="color" value="#6366f1" title="标记颜色">
+      <button class="btn primary" id="btn-create">添加</button>
+    </div>
+  </div>
+  <div class="card">
+    <h3>批量操作</h3>
+    <p class="hint">对库里尚未归类的样片重新跑一遍关键词匹配。</p>
+    <button class="btn primary" id="btn-auto-classify">立即自动分类</button>
+    <div class="stats-line" id="classify-result"></div>
+  </div>
+  <div class="card">
+    <h3>换分类标准</h3>
+    <p class="hint">删掉现有全部分类，按「写真 · 画面状态」重建（安静 / 温柔 / 元气 / 动感 / 情绪 / 时尚造型），重跑一次归类，并把话题标签同步成样片标签。<br><b>会清空现有分类和已有归类，图片文件不动。</b></p>
+    <button class="btn" id="btn-apply-standard">重设分类标准</button>
+    <div class="stats-line" id="standard-result"></div>
+  </div>
+</section>
+
+<section class="page-head">
+  <h2>全部分类</h2>
+</section>
+<table class="table" id="cat-table">
+  <thead>
+    <tr><th>颜色</th><th>分类名</th><th>关键词</th><th>样片数</th><th>操作</th></tr>
+  </thead>
+  <tbody></tbody>
+</table>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/categories.js') }}"></script>
+{% endblock %}

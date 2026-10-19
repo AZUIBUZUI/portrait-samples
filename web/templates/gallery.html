@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}图库 · 写真样片库{% endblock %}
+
+{% block content %}
+<section class="toolbar">
+  <div class="row toolbar-top">
+    <div class="chips" id="category-chips"></div>
+    <div class="seg" id="view-toggle">
+      <button class="seg-btn active" data-view="flat" title="所有样片铺成瀑布流">平铺</button>
+      <button class="seg-btn" data-view="groups" title="按原帖 / 导入批次分组，方便看组图">分组</button>
+    </div>
+  </div>
+  <div class="row" id="flat-controls">
+    <input id="search" type="search" placeholder="搜标题 / 作者 / 备注">
+    <select id="sort-select" title="排序方式" aria-label="排序方式">
+      <option value="newest">最新入库</option>
+      <option value="oldest">最早入库</option>
+      <option value="shot_new">拍摄日期 新→旧</option>
+      <option value="shot_old">拍摄日期 旧→新</option>
+      <option value="largest">分辨率 最大→小</option>
+      <option value="heaviest">文件大小 大→小</option>
+      <option value="author">按作者</option>
+      <option value="random">随机洗一洗</option>
+    </select>
+    <select id="source-filter">
+      <option value="">全部来源</option>
+      <option value="local">本地文件夹</option>
+      <option value="web">网页 / 社媒</option>
+      <option value="manual">手工上传</option>
+    </select>
+    <select id="tag-filter"><option value="">全部标签</option></select>
+    <label class="check"><input type="checkbox" id="fav-only"> 只看收藏</label>
+    <button class="btn" id="btn-auto-classify" title="先按话题标签 / 文案归类；没命中的用「纠正分类」训练出的模型猜">自动分类</button>
+  </div>
+  <div class="stats-line" id="stats-line"></div>
+</section>
+
+<div class="crumb" id="crumb" hidden></div>
+<div class="groups" id="groups" hidden></div>
+<div class="masonry" id="grid"></div>
+<div class="sentinel" id="sentinel" hidden><span class="spinner" aria-hidden="true"></span>加载中…</div>
+<div class="end-line" id="end-line" hidden>已经到底了</div>
+<div class="empty" id="empty" hidden>这里还没有样片，去「采集」页导入第一批吧。</div>
+
+<!-- 样片详情 -->
+<div class="modal" id="modal" hidden>
+  <div class="modal-mask" data-close></div>
+  <div class="modal-body">
+    <div class="modal-view">
+      <button class="modal-nav prev" id="m-prev" title="同组上一张（←）" hidden>‹</button>
+      <img id="m-img" alt="">
+      <button class="modal-nav next" id="m-next" title="同组下一张（→）" hidden>›</button>
+      <div class="modal-count" id="m-count" hidden></div>
+    </div>
+    <aside class="modal-meta">
+      <button class="modal-close" data-close>×</button>
+      <h3 id="m-title">—</h3>
+      <dl class="kv">
+        <dt>分类</dt><dd><select id="m-category"></select></dd>
+        <dt>标签</dt><dd><input id="m-tags" placeholder="逗号分隔，如 日系,逆光"></dd>
+        <dt>备注</dt><dd><textarea id="m-note" rows="3"></textarea></dd>
+        <dt>来源</dt><dd id="m-source">—</dd>
+        <dt>作者</dt><dd id="m-author">—</dd>
+        <dt>话题</dt><dd id="m-hashtags">—</dd>
+        <dt>文案</dt><dd id="m-text" class="m-text">—</dd>
+        <dt id="m-date-label">拍摄日期</dt><dd id="m-date">—</dd>
+        <dt>尺寸</dt><dd id="m-size">—</dd>
+      </dl>
+      <div class="modal-actions">
+        <button class="btn primary" id="m-save">保存修改</button>
+        <button class="btn" id="m-fav">收藏</button>
+        <button class="btn" id="m-clear-label" hidden>人像无误，去掉「非人像」</button>
+        <a class="btn" id="m-open" target="_blank">看原图</a>
+        <button class="btn danger" id="m-delete">删除</button>
+      </div>
+      <p class="hint small">快捷键：← → 同组切换 · F 收藏 · R 去掉「非人像」 · Delete 删除 · Esc 关闭</p>
+    </aside>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/gallery.js') }}"></script>
+{% endblock %}
